@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from .models import Notification, Profile
 from .serializers import NotificationSerializer, ProfileSerializer
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny
 
 
 class NotificationViewSet(viewsets.ModelViewSet):
@@ -13,11 +13,11 @@ class NotificationViewSet(viewsets.ModelViewSet):
     #     if self.action in ['list', 'retrieve']:
     #         return [AllowAny()]
     #     return [IsAuthenticated()]
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [AllowAny]
 
 
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
 
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [AllowAny]

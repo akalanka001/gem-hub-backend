@@ -39,7 +39,9 @@ SECRET_KEY = env('DJ_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DJ_DEBUG')
 
-ALLOWED_HOSTS = ALLOWED_HOSTS = env.list('DJ_ALLOWED_HOSTS', default=['10.0.2.2', 'localhost', '127.0.0.1', '.azurewebsites.net'])
+# ALLOWED_HOSTS = env.list('DJ_ALLOWED_HOSTS', default=['10.0.2.2', 'localhost', '127.0.0.1', '.azurewebsites.net'])
+ALLOWED_HOSTS = ['10.0.2.2', 'localhost', '127.0.0.1']
+
 
 SUPABASE_JWT_SECRET = "your-supabase-jwt-secret"
 
@@ -153,12 +155,14 @@ STATIC_URL = "static/"
 
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'apps.core.authentication.supabase_auth.SupabaseAuth',
-    ],
+    # 'DEFAULT_AUTHENTICATION_CLASSES': [
+    #     'apps.core.authentication.supabase_auth.SupabaseAuth',
+    # ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
     ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [], # Disable all auth
+
 }
 
 SPECTACULAR_SETTINGS = {
