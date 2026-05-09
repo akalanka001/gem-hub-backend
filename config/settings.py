@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+from celery.schedules import crontab
 from pathlib import Path
 import os, environ
 
@@ -39,8 +40,15 @@ SECRET_KEY = env('DJ_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DJ_DEBUG')
 
-# ALLOWED_HOSTS = env.list('DJ_ALLOWED_HOSTS', default=['10.0.2.2', 'localhost', '127.0.0.1', '.azurewebsites.net'])
-ALLOWED_HOSTS = ['10.0.2.2', 'localhost', '127.0.0.1']
+
+
+
+ALLOWED_HOSTS = [
+    '10.0.2.2', 
+    'localhost', 
+    '127.0.0.1', 
+    '.azurewebsites.net'
+]
 
 
 SUPABASE_JWT_SECRET = "your-supabase-jwt-secret"
@@ -56,12 +64,14 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "drf_spectacular",
+    "drf_api_logger",
     "apps.core",
     "apps.gems",
     "apps.jobs",
 ]
 
 MIDDLEWARE = [
+    "drf_api_logger.middleware.api_logger_middleware.APILoggerMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -69,7 +79,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "apps.core.middlewares.logging.LoggingMiddleware"
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -170,121 +179,28 @@ SPECTACULAR_SETTINGS = {
     "DESCRIPTION": "API for Job Market and Gem Market",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
-}
-
-
-# Logger Implementation 
-
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-# Create logs directory
-LOGS_DIR = BASE_DIR / 'logs'  # pathlib style
-LOGS_DIR.mkdir(exist_ok=True)
-
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-
-    # ===== FORMATTERS =====
-    'formatters': {
-        # Simple for console
-        'simple': {
-            'format': '%(levelname)s %(message)s',
-        },
-        # Detailed for files
-        'verbose': {
-            'format': '%(asctime)s %(levelname)s %(message)s',
-            'datefmt': '%Y-%m-%d %H:%M:%S',
-        },
-        # JSON for enterprise/dashboards
-        'json': {
-            'format': '{"timestamp": "%(asctime)s", "level": "%(levelname)s", "message": "%(message)s"}',
-            'datefmt': '%Y-%m-%dT%H:%M:%S',
-        },
-    },
-
-    # ===== HANDLERS =====
-    'handlers': {
-        # Console output
-        'console': {
-            'class': 'logging.StreamHandler',
-            'formatter': 'verbose',
-            'level': 'DEBUG',
-        },
-
-        # General app logs (rotating)
-        'file': {
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': LOGS_DIR / 'app.log',
-            'formatter': 'verbose',
-            'level': 'INFO',
-            'maxBytes': 1024 * 1024 * 5,  # 5 MB
-            'backupCount': 5,
-        },
-
-        # Error logs only
-        'error_file': {
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': LOGS_DIR / 'error.log',
-            'formatter': 'verbose',
-            'level': 'ERROR',
-            'maxBytes': 1024 * 1024 * 5,  # 5 MB
-            'backupCount': 5,
-        },
-
-        # Request logs (separate file)
-        'request_file': {
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': LOGS_DIR / 'requests.log',
-            'formatter': 'verbose',
-            'level': 'INFO',
-            'maxBytes': 1024 * 1024 * 10,  # 10 MB
-            'backupCount': 10,
-        },
-    },
-
-    # ===== LOGGERS =====
-    'loggers': {
-        # Django's internal logs
-        'django': {
-            'handlers': ['console', 'file', 'error_file'],
-            'level': 'INFO',
-            'propagate': False,
-        },
-
-        # Django requests (404s, 500s, etc)
-        'django.request': {
-            'handlers': ['console', 'error_file'],
-            'level': 'ERROR',
-            'propagate': False,
-        },
-
-        # Database queries (turn on for debugging)
-        'django.db.backends': {
-            'handlers': ['console'],
-            'level': 'WARNING',  # change to DEBUG to see all queries
-            'propagate': False,
-        },
-
-        # Your apps
-        'apps': {
-            'handlers': ['console', 'file', 'error_file'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-
-        # Your middleware specifically
-        'apps.core.middlewares': {
-            'handlers': ['console', 'request_file'],
-            'level': 'INFO',
-            'propagate': False,
-        },
-    },
-
-    # ===== ROOT LOGGER (catches everything else) =====
-    'root': {
-        'handlers': ['console', 'file'],
-        'level': 'INFO',
+    "ENUM_NAME_OVERRIDES": {
+        "JobStatusEnum": "apps.jobs.models.JobStatus", # Map your specific choice class
+        "GemStatusEnum": "apps.gems.models.GemStatus",
     },
 }
+
+
+CELERY_BEAT_SCHEDULE = {
+    'daily-log-cleanup': {
+        'task': 'apps.core.management.commands.tasks.cleanup_api_logs',
+        'schedule': crontab(hour=0, minute=0), # Midnight every day
+        'args': (7,), # Keep only 7 days of logs
+    },
+}
+
+# API logger implementation
+
+DRF_API_LOGGER_DATABASE = True
+# DRF_API_LOGGER_EXCLUDE_KEYS = ['password', 'token', 'access', 'refresh', 'secret']
+DRF_API_LOGGER_EXCLUDE_KEYS = ['password']
+DRF_API_LOGGER_SKIP_URL_NAME = ['health-check', 'prometheus-metrics']
+DRF_API_LOGGER_SKIP_NAMESPACE = ['admin']
+DRF_API_LOGGER_MAX_REQUEST_BODY_SIZE = 1024
+DRF_API_LOGGER_ALL_REQUEST_HEADERS = True
+
