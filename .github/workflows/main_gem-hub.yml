@@ -30,6 +30,7 @@ jobs:
         env:
           # Dummy values to satisfy settings.py during the build
           DJ_SECRET_KEY: "build-time-dummy-key"
+          DJ_DEBUG: "False"
         run: |
           pip install uv
           uv sync
