@@ -40,9 +40,6 @@ SECRET_KEY = env('DJ_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DJ_DEBUG')
 
-
-
-
 ALLOWED_HOSTS = [
     '10.0.2.2', 
     'localhost', 
@@ -50,6 +47,10 @@ ALLOWED_HOSTS = [
     '.azurewebsites.net'
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://gem-hub-are5gkfgdqf4hyc4.southeastasia-01.azurewebsites.net',
+    'https://*.azurewebsites.net', # This covers any subdomains too
+]
 
 SUPABASE_JWT_SECRET = "your-supabase-jwt-secret"
 
