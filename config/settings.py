@@ -183,11 +183,10 @@ SPECTACULAR_SETTINGS = {
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
     "ENUM_NAME_OVERRIDES": {
-        "JobStatusEnum": "apps.jobs.models.JobStatus", # Map your specific choice class
-        "GemStatusEnum": "apps.gems.models.GemStatus",
+        "JobStatusEnum": "apps.jobs.models.Job.JobStatus", 
+        "GemStatusEnum": "apps.gems.models.GemListing.GemStatus",
     },
 }
-
 
 CELERY_BEAT_SCHEDULE = {
     'daily-log-cleanup': {
