@@ -5,7 +5,9 @@ import uuid
 class Job(models.Model):
     # Enums for Job Status
     class JobStatus(models.TextChoices):
-        OPEN = "open", "Open"
+        PENDING = "pending", "Pending"
+        APPROVED = "approved", "Approved"
+        REJECTED = "rejected", "Rejected"
         CLOSED = "closed", "Closed"
 
     job_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -14,10 +16,9 @@ class Job(models.Model):
     company_info = models.TextField(null=True, blank=True)
     salary = models.FloatField(null=True, blank=True)
     tags = models.TextField(null=True, blank=True)
-    logo_color = models.IntegerField(null=True, blank=True)
     status = models.TextField(
         choices=JobStatus.choices, 
-        default=JobStatus.OPEN
+        default=JobStatus.PENDING
     )
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -26,8 +27,6 @@ class Job(models.Model):
 
     def __str__(self):
         return self.title
-
-
 class Application(models.Model):
     # Enums for Application Status
     class ApplicationStatus(models.TextChoices):

@@ -40,12 +40,7 @@ SECRET_KEY = env('DJ_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DJ_DEBUG')
 
-ALLOWED_HOSTS = [
-    '10.0.2.2', 
-    'localhost', 
-    '127.0.0.1', 
-    '.azurewebsites.net'
-]
+ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = [
     'https://gem-hub-are5gkfgdqf4hyc4.southeastasia-01.azurewebsites.net',
@@ -103,8 +98,7 @@ TEMPLATES = [
 WSGI_APPLICATION = "config.wsgi.application"
 
 
-# Database
-# https://docs.djangoproject.com/en/6.0/ref/settings/#databases
+#Databasehttps://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 # DATABASES = {
 #     "default": {
