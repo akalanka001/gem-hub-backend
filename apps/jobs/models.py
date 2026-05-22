@@ -17,7 +17,9 @@ class Job(models.Model):
 
     description = models.TextField(null=True, blank=True)
 
-    salary = models.FloatField(null=True, blank=True)
+    #salary = models.FloatField(null=True, blank=True)\
+    min_salary = models.FloatField(null=True, blank=True)
+    max_salary = models.FloatField(null=True, blank=True)
     tags = models.TextField(null=True, blank=True)
     status = models.TextField(
         choices=JobStatus.choices, 
