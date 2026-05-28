@@ -16,6 +16,6 @@ dependencies = [
     "gunicorn>=26.0.0",
     "psycopg2>=2.9.12",
     "psycopg2-binary>=2.9.11",
-    "pyjwt>=2.12.1",
+    "pyjwt[crypto,cryptography]>=2.12.1",
     "whitenoise>=6.12.0",
 ]
