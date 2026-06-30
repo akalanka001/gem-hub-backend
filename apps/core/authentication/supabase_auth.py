@@ -26,7 +26,7 @@ class SupabaseAuth(authentication.BaseAuthentication):
                 signing_key.key,
                 algorithms=["ES256"],
                 audience="authenticated",
-                issuer=settings.SUPABASE_URL
+                issuer=f"{settings.SUPABASE_URL}/auth/v1",
             )
             
             print("Decoded JWT payload:", payload)  #
