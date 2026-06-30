@@ -155,6 +155,9 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
+
+    # 3. Pagination settings
+    'DEFAULT_PAGINATION_CLASS': 'apps.core.pagination.global_pagination.StandardResultsSetPagination',
 }
 
 SPECTACULAR_SETTINGS = {
