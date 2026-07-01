@@ -20,8 +20,8 @@ else:
 
 SECRET_KEY = env('DJ_SECRET_KEY')
 DEBUG = env('DJ_DEBUG')
-# ALLOWED_HOSTS = env.list("DJ_ALLOWED_HOSTS", default=[])
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.8.188']
+# ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.8.188']
+ALLOWED_HOSTS = env.list("DJ_ALLOWED_HOSTS", default=[])
 CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[])
 SUPABASE_URL = env('SUPABASE_URL')
 JWKS_URL = env('JWKS_URL')

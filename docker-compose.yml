@@ -5,12 +5,10 @@ services:
     build: .
     container_name: gem-hub-backend
     restart: always
-    volumes:
-      - static_volume:/staticfiles
     env_file:
       - .env
     ports:
-      - "127.0.0.1:5000:5000" # Keeps port 5000 bound strictly to the local host
+      - "5000:5000" # Keeps port 5000 bound strictly to the local host
     networks:
       - supabase_network
 
