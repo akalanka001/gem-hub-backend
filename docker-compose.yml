@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    container_name: gem-hub-backend
+    restart: always
+    volumes:
+      - static_volume:/staticfiles
+    env_file:
+      - .env
+    ports:
+      - "127.0.0.1:5000:5000" # Keeps port 5000 bound strictly to the local host
+    networks:
+      - supabase_network
+
+volumes:
+  static_volume:
+
+networks:
+  supabase_network:
+    external: true
+    name: supabase_default  # Match the exact name from 'docker network ls'
