@@ -7,10 +7,14 @@ services:
     restart: always
     env_file:
       - .env
+    volumes:
+      - ./.env:/.env:ro
     ports:
       - "5000:5000" # Keeps port 5000 bound strictly to the local host
     networks:
       - supabase_network
+    volumes:
+      - ./.env:/.env:ro
 
 volumes:
   static_volume:
