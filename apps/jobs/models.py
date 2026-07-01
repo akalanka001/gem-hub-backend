@@ -3,7 +3,7 @@ from apps.core.models import Profile
 import uuid
 
 class Job(models.Model):
-    # Enums for Job Status
+
     class JobStatus(models.TextChoices):
         PENDING = "pending", "Pending"
         APPROVED = "approved", "Approved"
@@ -12,19 +12,25 @@ class Job(models.Model):
 
     job_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     employer = models.ForeignKey(Profile, on_delete=models.CASCADE)
+
     title = models.TextField()
     company_info = models.TextField(null=True, blank=True)
-
     description = models.TextField(null=True, blank=True)
 
-    #salary = models.FloatField(null=True, blank=True)\
     min_salary = models.FloatField(null=True, blank=True)
     max_salary = models.FloatField(null=True, blank=True)
+
+    # ✅ ADD THESE TWO FIELDS
+    phone_number = models.CharField(max_length=20, null=True, blank=True)
+    whatsapp_number = models.CharField(max_length=20, null=True, blank=True)
+
     tags = models.TextField(null=True, blank=True)
+
     status = models.TextField(
-        choices=JobStatus.choices, 
+        choices=JobStatus.choices,
         default=JobStatus.PENDING
     )
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -32,6 +38,7 @@ class Job(models.Model):
 
     def __str__(self):
         return self.title
+
 class Application(models.Model):
     # Enums for Application Status
     class ApplicationStatus(models.TextChoices):
