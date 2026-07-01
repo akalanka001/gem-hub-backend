@@ -17,13 +17,6 @@ RUN uv sync --frozen --no-cache
 
 COPY . ./
 
-# Update the RUN command in your Dockerfile to look like this:
-RUN DJANGO_SECRET_KEY=dummy \
-    DJ_SECRET_KEY=dummy \
-    DJ_DEBUG=False \
-    DATABASE_URL=postgres://dummy_user:dummy_pass@localhost/dummy_db \
-    uv run python manage.py collectstatic --noinput
-    
 EXPOSE 5000
 
 CMD ["uv", "run", "gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:5000", "--workers", "3"]
