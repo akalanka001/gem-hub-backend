@@ -1,5 +1,5 @@
 #!/bin/bash
-# Path: /opt/fileflow/Multi-Threaded-File-Transfer-System/deploy/deploy.sh
+# Path: /opt/gem-hub-backend/.deploy/deploy.sh
 set -e
 
 echo "🚀 Starting Deployment..."
