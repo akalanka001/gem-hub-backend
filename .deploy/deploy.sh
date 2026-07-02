@@ -13,7 +13,7 @@ docker compose up -d --no-deps web
 # 3. Apply database migrations
 docker compose exec -T web uv run python manage.py migrate --noinput
 
-# 4. Collect static files (optional, but good practice for Django)
+# 4. Collect static files
 docker compose exec -T web uv run python manage.py collectstatic --noinput
 
 # 5. Cleanup unused images

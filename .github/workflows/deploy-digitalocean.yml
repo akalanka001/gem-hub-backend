@@ -19,10 +19,14 @@ jobs:
           port: ${{ secrets.DO_PORT }}
           script: |
             set -e
-            cd /opt/fileflow/Multi-Threaded-File-Transfer-System
+            # Move to the correct server directory
+            cd /opt/gem-hub-backend
             
-            # Pull latest changes from your repo
-            git pull origin main
+            # Fetch and pull from the correct branch
+            git fetch origin
+            git checkout amila
+            git pull origin amila
             
-            # Execute the deployment engine
-            ./deploy/deploy.sh
+            # Make sure the script is executable and run it
+            chmod +x .deploy/deploy.sh
+            ./.deploy/deploy.sh
