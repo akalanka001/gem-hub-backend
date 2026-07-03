@@ -21,7 +21,8 @@ class JobViewSet(viewsets.ModelViewSet):
             # Note: Depending on your custom logic, you might want OR logic instead of AND logic.
             # As written here, it mirrors your GemListing config exactly.
             # permission_classes = [IsAuthenticated, IsOwner(field_name='employer'), IsAdminUser]
-            permission_classes = [IsAuthenticated, IsOwner(field_name='employer')]
+            # permission_classes = [IsAuthenticated, IsOwner(field_name='employer')]
+            permission_classes = [IsAuthenticated]
             
         return [permission() for permission in permission_classes]
 
@@ -64,6 +65,7 @@ class ApplicationViewSet(viewsets.ModelViewSet):
             permission_classes = [AllowAny]
         else:
             # permission_classes = [IsAuthenticated, IsOwner(field_name='applicant'), IsAdminUser]
-            permission_classes = [IsAuthenticated, IsOwner(field_name='applicant')]
+            # permission_classes = [IsAuthenticated, IsOwner(field_name='applicant')]
+            permission_classes = [IsAuthenticated]
             
         return [permission() for permission in permission_classes]

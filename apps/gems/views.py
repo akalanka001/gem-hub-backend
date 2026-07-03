@@ -31,7 +31,8 @@ class GemListingViewSet(viewsets.ModelViewSet):
             permission_classes = [AllowAny]
         else:
             # permission_classes = [IsAuthenticated, IsOwner(field_name='owner'), IsAdminUser]
-            permission_classes = [IsAuthenticated, IsOwner(field_name='owner')]
+            # permission_classes = [IsAuthenticated, IsOwner(field_name='owner')]
+            permission_classes = [IsAuthenticated]
             
         return [permission() for permission in permission_classes]
 
