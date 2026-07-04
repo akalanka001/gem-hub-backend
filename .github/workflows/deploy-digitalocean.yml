@@ -19,7 +19,7 @@ jobs:
           port: ${{ secrets.DO_PORT }}
           script: |
             set -e
-            # Move to the correct server directory
+            # Move to the directory
             cd /opt/gem-hub-backend
             
             # Fetch and pull from the correct branch
@@ -27,6 +27,6 @@ jobs:
             git checkout amila
             git pull origin amila
             
-            # Make sure the script is executable and run it
+            # Execute deploy.sh
             chmod +x .deploy/deploy.sh
             ./.deploy/deploy.sh

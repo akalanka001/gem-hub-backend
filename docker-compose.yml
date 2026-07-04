@@ -10,11 +10,11 @@ services:
     volumes:
       - ./.env:/.env:ro
     ports:
-      - "5000:5000" # Keeps port 5000 bound strictly to the local host
+      - "5000:5000"
     networks:
       - supabase_network
 
 networks:
   supabase_network:
     external: true
-    name: supabase_default  # Match the exact name from 'docker network ls'
+    name: supabase_default

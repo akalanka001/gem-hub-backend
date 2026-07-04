@@ -25,7 +25,7 @@ class Profile(models.Model):
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=50, unique=True, null=True, blank=True)
     phone = models.CharField(max_length=15, null=True, blank=True)
-    avatar_url = models.URLField(max_length=500, null=True, blank=True)
+    avatar_url = models.TextField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     
     role = models.CharField(max_length=10, choices=Role.choices, default=Role.USER)
